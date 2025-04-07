@@ -140,8 +140,24 @@ A new logflare secret API key is required for securing communication between all
 ```yaml
 secret:
   analytics:
-    apiKey: your-super-secret-with-at-least-32-characters-long-logflare-key
+    apiKey: random-32-characters-long-logflare-key-for-log-ingestion
+    studioKey: another-random-32-characters-long-logflare-key-for-studio
 ```
+
+When the studio tries to query logs, it'll use the `studioKey`. 
+
+However, when logflare (aka supabase-analytics) initializes, it only inserts the `apiKey` into it's backend database. The second key needs to be inserted manually.
+
+Open the Supabase Studio, navigate to SQL Editor, execute the following SQL statement:
+
+```sql
+INSERT INTO _analytics.oauth_access_tokens 
+(resource_owner_id, token, scopes, description, inserted_at, updated_at) 
+VALUES 
+(1, '[YOUR QUERY KEY]', 'query:endpoint:1', 'QUERY_KEY_FOR_STUDIO', now(), now());
+```
+
+Now if you navigate to Logs, you should be able to see logs without the "Error fetching logs" error. 
 
 ### S3 secret
 

@@ -44,11 +44,13 @@ secret:
   # analytics Logflare API key
   analytics:
     apiKey: ""
+    studioKey: ""
     # specify existing secret, which takes precedence over variable above
     secretRef: ""
     # override secret keys for existing secret refs
     secretRefKey:
       apiKey: apiKey
+      studioKey: studioKey
   # smtp will be used to reference secret including smtp credentials
   smtp:
     # username: ""
