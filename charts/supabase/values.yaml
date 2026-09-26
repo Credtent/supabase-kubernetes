@@ -474,6 +474,22 @@ realtime:
     ERL_AFLAGS: -proto_dist inet_tcp
     ENABLE_TAILSCALE: "false"
     DNS_NODES: "''"
+  # Extra envFrom sources, passed through as-is (same shape as auth.envFrom).
+  # Empty or unset renders nothing.
+  envFrom: []
+    # - secretRef:
+    #     name: supabase-secrets
+  # Env vars loaded from a Secret. Map of ENV_NAME to a secretKeyRef {name, key}.
+  # Empty or unset renders nothing, so existing realtime.environment values are unchanged.
+  # Set environment.SECRET_KEY_BASE and environment.DB_ENC_KEY to null to drop the chart
+  # defaults (Helm map-merge would otherwise keep them) and supply the values here.
+  secretEnv: {}
+    # SECRET_KEY_BASE: # SSM /supabase/<env>/realtime-secret-key-base
+    #   name: supabase-secrets
+    #   key: SECRET_KEY_BASE
+    # DB_ENC_KEY: # SSM /supabase/<env>/realtime-db-enc-key
+    #   name: supabase-secrets
+    #   key: DB_ENC_KEY
   # volumeMounts:
   #   - name: volume_name
   #     mountPath: /path/to/my/secret
